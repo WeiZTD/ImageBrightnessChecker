@@ -4,7 +4,7 @@ A simple CLI tool to get average brightness of image
 ## Usage
 Show usage message
 ```
-imgBrightChk.exe - 
+imgBrightChk.exe -?
 ```
 Get brightness from original image file. Range within 0 ~ 255 .
 ```
