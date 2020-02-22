@@ -14,7 +14,7 @@ imgBrightChk.exe -p pathtoimage.jpg
 ```
 imgBrightChk.exe -p pathtoimage.jpg -w 500 -h 500
 ```
-If only given one border setting, another will be same as original image.
+If only given one border setting, another will remain the same as original image.
 ```
 imgBrightChk.exe -p pathtoimage.jpg -w 500 (-h = original image height)
 ```
