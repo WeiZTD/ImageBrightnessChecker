@@ -6,6 +6,7 @@ import (
 	"image"
 	"os"
 	"runtime"
+	"sync"
 
 	"github.com/disintegration/imaging"
 )
@@ -65,12 +66,16 @@ func resizeImage(srcImg image.Image) image.Image {
 func getAvgBrightness(srcImg image.Image) int {
 	imgBounds := srcImg.Bounds().Max
 	cpuCount := runtime.NumCPU()
-	ch := make(chan int, cpuCount)
+	wg := sync.WaitGroup{}
+	mux := sync.Mutex{}
+	hBriSum := 0
 
 	for i := 0; i < cpuCount; i++ {
 		Start := i * imgBounds.Y / cpuCount
 		End := (i + 1) * imgBounds.Y / cpuCount
+		wg.Add(1)
 		go func() {
+			defer wg.Done()
 			hBriSumPart := 0
 			for h := Start; h < End; h++ {
 				wBriSum := 0
@@ -82,15 +87,13 @@ func getAvgBrightness(srcImg image.Image) int {
 				}
 				hBriSumPart += wBriSum / imgBounds.X
 			}
-			ch <- hBriSumPart
+			mux.Lock()
+			hBriSum += hBriSumPart
+			mux.Unlock()
 		}()
 	}
+	wg.Wait()
 
-	hBriSum := 0
-	for i := 0; i < cpuCount; i++ {
-		hBriSum += <-ch
-	}
-	close(ch)
 	return hBriSum / imgBounds.Y
 }
 
