@@ -19,4 +19,4 @@ If only given one border setting, another will remain the same as original image
 imgBrightChk.exe -p pathtoimage.jpg -w 500 (-h = original image height)
 ```
 ## Built With
- [Imaging](httpsgithub.comdisintegrationimaging) - image processing package for Go
+ [Imaging](https://github.com/disintegration/imaging) - image processing package for Go
